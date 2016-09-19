@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+{{range ls "config/essi-ssh"}}
+SERVICE='{{.Key}}' consul-template -once -template="/root/key.template:/root/.ssh/key_{{.Key}}"
+{{end}}

@@ -1,0 +1,1 @@
+{{with secret (printf "secret/%s/key" (env "SERVICE"))}}{{.Data.value}}{{end}}
