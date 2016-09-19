@@ -1,5 +1,5 @@
 {{range ls "config/essi-ssh"}}
 Host {{.Key}}
-IdentityFile /root/key_{{.Key}}
+IdentityFile /root/.ssh/key_{{.Key}}
 User {{.Value}}
 {{end}}
