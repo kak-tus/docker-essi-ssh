@@ -1,5 +1,7 @@
 FROM kaktuss/essi:0.10
 
+MAINTAINER Andrey Kuzmin "kak-tus@mail.ru"
+
 ENV CONSUL_HTTP_ADDR=
 ENV CONSUL_TOKEN=
 ENV VAULT_ADDR=
