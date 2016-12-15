@@ -5,4 +5,4 @@ consul-template -once -template="/root/generate.sh.template:/root/generate.sh" \
   && /root/generate.sh \
   && consul-template -once -template="/root/config.template:/root/.ssh/config" \
   && chmod 600 /root/.ssh/* \
-  && hypnotoad -f /usr/local/bin/essi.pl
+  && /usr/local/bin/start_essi.sh
