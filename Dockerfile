@@ -13,8 +13,8 @@ COPY config.template /root/config.template
 COPY consul-template_0.15.0_SHA256SUMS /usr/local/bin/consul-template_0.15.0_SHA256SUMS
 COPY start.sh /usr/local/bin/start.sh
 
-RUN mkdir -p /home/www-data/.ssh && chmod 700 /home/www-data/.ssh \
-  && apt-get update \
+RUN \
+  apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y curl unzip \
 
   && cd /usr/local/bin \
