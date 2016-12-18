@@ -14,6 +14,6 @@ consul-template -once -template="/root/generate.sh.template:/root/generate.sh" \
 /usr/local/bin/start_essi.sh >/proc/1/fd/1 2>/proc/1/fd/2 &
 child=$!
 
-trap "kill $child" SIGTERM
+trap "kill $child" TERM
 wait "$child"
 
