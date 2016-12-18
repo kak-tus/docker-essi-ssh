@@ -1,4 +1,4 @@
-FROM kaktuss/essi:0.23
+FROM kaktuss/essi:0.24
 
 MAINTAINER Andrey Kuzmin "kak-tus@mail.ru"
 
