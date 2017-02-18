@@ -1,0 +1,3 @@
+{{ range $host := ls "config/essi-ssh/list" }}
+curl -X POST 'http://127.0.0.1:9007/v2/ssh-keyscan.json?host={{ $host.Key }}{{ if keyExists ( printf "config/essi-ssh/%s/port" $host.Key ) }}&port={{ key ( printf "config/essi-ssh/%s/port" $host.Key ) }}{{ end }}'
+{{ end }}

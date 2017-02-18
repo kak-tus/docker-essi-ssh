@@ -1,29 +1,32 @@
-FROM kaktuss/essi:0.28
+FROM kaktuss/essi:0.29
 
 MAINTAINER Andrey Kuzmin "kak-tus@mail.ru"
 
-ENV CONSUL_HTTP_ADDR=
-ENV CONSUL_TOKEN=
-ENV VAULT_ADDR=
-ENV VAULT_TOKEN=
+ENV CONSUL_TEMPLATE_VERSION=0.18.1
 
-COPY generate.sh.template /root/generate.sh.template
-COPY key.template /root/key.template
-COPY config.template /root/config.template
-COPY consul-template_0.15.0_SHA256SUMS /usr/local/bin/consul-template_0.15.0_SHA256SUMS
-COPY start.sh /usr/local/bin/start.sh
+COPY consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS /usr/local/bin/consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS
 
 RUN \
   apt-get update \
   && apt-get install --no-install-recommends --no-install-suggests -y curl unzip \
 
   && cd /usr/local/bin \
-
-  && curl -L https://releases.hashicorp.com/consul-template/0.15.0/consul-template_0.15.0_linux_amd64.zip -o consul-template_0.15.0_linux_amd64.zip \
-  && sha256sum -c consul-template_0.15.0_SHA256SUMS \
-  && unzip consul-template_0.15.0_linux_amd64.zip \
-  && rm consul-template_0.15.0_linux_amd64.zip consul-template_0.15.0_SHA256SUMS \
+  && curl -L https://releases.hashicorp.com/consul-template/${CONSUL_TEMPLATE_VERSION}/consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip -o consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
+  && sha256sum -c consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
+  && unzip consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip \
+  && rm consul-template_${CONSUL_TEMPLATE_VERSION}_linux_amd64.zip consul-template_${CONSUL_TEMPLATE_VERSION}_SHA256SUMS \
 
   && rm -rf /var/lib/apt/lists/*
 
-CMD ["/usr/local/bin/start.sh"]
+ENV CONSUL_HTTP_ADDR=
+ENV CONSUL_TOKEN=
+ENV VAULT_ADDR=
+ENV VAULT_TOKEN=
+
+COPY config.template /root/config.template
+COPY start.sh /usr/local/bin/start.sh
+COPY store.sh /usr/local/bin/store.sh
+COPY essi.hcl /etc/essi.hcl
+COPY init_hosts.sh.template /root/init_hosts.sh.template
+
+CMD consul-template -config /etc/essi.hcl

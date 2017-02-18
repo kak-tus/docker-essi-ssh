@@ -1,5 +1,15 @@
-{{range ls "config/essi-ssh"}}
-Host {{.Key}}
-IdentityFile /home/www-data/.ssh/key_{{.Key}}
-User {{.Value}}
-{{end}}
+{{ range $host := ls "config/essi-ssh/list" }}
+Host {{ $host.Key }}
+IdentityFile /home/www-data/.ssh/key_{{ $host.Key }}
+
+{{ with secret ( printf "secret/%s/key" $host.Key ) }}
+{{ plugin "store.sh" ( printf "/home/www-data/.ssh/key_%s" $host.Key ) ( printf "%s" .Data.value ) }}
+{{ end }}
+
+User {{ key ( printf "config/essi-ssh/%s/user" $host.Key ) }}
+
+{{ if keyExists ( printf "config/essi-ssh/%s/port" $host.Key ) }}
+Port {{ key ( printf "config/essi-ssh/%s/port" $host.Key ) }}
+{{ end }}
+
+{{ end }}
