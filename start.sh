@@ -8,7 +8,7 @@ chmod 600 /home/www-data/.ssh/*
 /usr/local/bin/start_essi.sh &
 child=$!
 
-sleep 10
+sleep 60
 /usr/local/bin/init_hosts.sh
 
 trap "kill $child" TERM
